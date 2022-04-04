@@ -30,44 +30,43 @@ class Account:
     def __str__(self):
         return f'계좌번호: {self.ano}, 소유주: {self.owner}, 잔액: {self.__balance:9,d}'
 
-acc_list = []
+acc_list = []    
+def check_duplicate(ano):
+    for acc in acc_list:
+        if ano == acc.ano:
+            return True
+    return False
+
+# 사용자로부터 필요한 정보를 입력 받아서 계좌를 생성함
+def create_account():
+    while True:
+        s = input('계좌번호 성명 금액> ').split()
+        ano, owner = s[0], s[1]
+        amount = int(s[2])
+        if not check_duplicate(ano):
+            break
+    acc = Account(ano, owner, amount)
+    acc_list.append(acc)
+
+# 사용자로부터 필요한 정보를 입력 받아서 계좌에 돈을 입금함
+def deposit_account():
+    s = input('계좌번호 금액> ').split()
+    ano, amount = s[0], int(s[1])
+    for acc in acc_list:
+        if acc.ano == ano:
+            acc.deposit(amount)
+            return
+
+# 사용자로부터 필요한 정보를 입력 받아서 계좌에서 돈을 출금함
+def withdraw_account():
+    s = input('계좌번호 금액> ').split()
+    ano, amount = s[0], int(s[1])
+    for acc in acc_list:
+        if acc.ano == ano:
+            acc.withdraw(amount)
+            return
 
 if __name__ == '__main__':
-    def check_duplicate(ano):
-        for acc in acc_list:
-            if ano == acc.ano:
-                return True
-        return False
-
-    # 사용자로부터 필요한 정보를 입력 받아서 계좌를 생성함
-    def create_account():
-        while True:
-            s = input('계좌번호 성명 금액> ').split()
-            ano, owner = s[0], s[1]
-            amount = int(s[2])
-            if not check_duplicate(ano):
-                break
-        acc = Account(ano, owner, amount)
-        acc_list.append(acc)
-
-    # 사용자로부터 필요한 정보를 입력 받아서 계좌에 돈을 입금함
-    def deposit_account():
-        s = input('계좌번호 금액> ').split()
-        ano, amount = s[0], int(s[1])
-        for acc in acc_list:
-            if acc.ano == ano:
-                acc.deposit(amount)
-                return
-
-    # 사용자로부터 필요한 정보를 입력 받아서 계좌에서 돈을 출금함
-    def withdraw_account():
-        s = input('계좌번호 금액> ').split()
-        ano, amount = s[0], int(s[1])
-        for acc in acc_list:
-            if acc.ano == ano:
-                acc.withdraw(amount)
-                return
-
     while True:
         try:
             menu = int(input('1:계좌생성, 2:계좌목록, 3:입금, 4:출금, 5:종료> '))
